@@ -50,24 +50,27 @@ ui <- fluidPage(
         selectInput("team", "Select a Team:",
                     choices = unique(team_stats$team), selected = "New England Patriots"),
         helpText("Select a team to display its performance over the years."),
-        
-        sliderInput("years", "Select Year Range:",
-                    min = min(team_stats$year), max = max(team_stats$year),
-                    value = c(min(team_stats$year), max(team_stats$year)), sep = ""),
-        helpText("Use the slider to choose the time range for the data."),
-        
         selectInput("metric", "Select Metric:",
                     choices = c("Win Percentage" = "win_loss_perc",
                                 "Points Scored" = "points",
                                 "Points Allowed" = "points_opp",
                                 "Rushing Yards per Attempt" = "rush_yds_per_att",
                                 "Penalties" = "penalties")),
-        helpText("Select a statistical metric to visualize.")
+        helpText("Select a statistical metric to visualize."),
+        sliderInput("years", "Select Year Range:",
+                    min = min(team_stats$year), max = max(team_stats$year),
+                    value = c(min(team_stats$year), max(team_stats$year)), sep = ""),
+        helpText("Use the slider to choose the time range for the data.")
       ),
       
       # Inputs for Team Comparisons
       conditionalPanel(
         condition = "input.visualization == 'Team Comparisons'",
+        selectInput("comparisonMetric", "Select Comparison Metric:",
+                    choices = c("Win Percentage", "Points Scored vs. Allowed", 
+                                "Margin of Victory", "Rushing Yards per Attempt", 
+                                "Penalties", "Turnover Percentage", "Expected Points")),
+        helpText("Select a metric to compare between the selected teams."),
         sliderInput("comparison_years", "Select Year Range:",
                     min = min(team_stats$year), max = max(team_stats$year),
                     value = c(min(team_stats$year), max(team_stats$year)), sep = ""),
@@ -79,13 +82,7 @@ ui <- fluidPage(
         helpText("Choose which teams to display in the comparison."),
         
         actionButton("selectAll", "Select All"),
-        actionButton("unselectAll", "Unselect All"),
-        
-        selectInput("comparisonMetric", "Select Comparison Metric:",
-                    choices = c("Win Percentage", "Points Scored vs. Allowed", 
-                                "Margin of Victory", "Rushing Yards per Attempt", 
-                                "Penalties", "Turnover Percentage", "Expected Points")),
-        helpText("Select a metric to compare between the selected teams.")
+        actionButton("unselectAll", "Unselect All")
       ),
       
       # Inputs for Brushing Plot
