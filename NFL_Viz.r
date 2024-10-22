@@ -1,3 +1,12 @@
+install_if_missing <- function(pkg) {
+  if (!requireNamespace(pkg, quietly = TRUE)) {
+    install.packages(pkg)
+  }
+}
+
+packages <- c("DT", "shiny", "tidyverse", "ggplot2")
+lapply(packages, install_if_missing)
+
 # Load necessary libraries
 library(DT)
 library(shiny)
@@ -252,16 +261,16 @@ server <- function(input, output, session) {
     # Format the table
     datatable(brushed_points, 
               options = list(
-                pageLength = 10,  # Show 10 rows per page
+                pageLength = 10,
                 autoWidth = TRUE, 
                 columnDefs = list(
-                  list(className = 'dt-center', targets = "_all")  # Center all text
+                  list(className = 'dt-center', targets = "_all")
                 )
               ),
               rownames = FALSE) %>%
       formatPercentage(columns = "Win Percentage", digits = 2) %>%
       formatRound(columns = "Turnover Percentage", digits = 2) %>% 
-      formatStyle('Points Differential', color = styleInterval(c(0), c('red', 'green')))  # Color points_diff
+      formatStyle('Points Differential', color = styleInterval(c(0), c('red', 'green')))
   })
 }
 
